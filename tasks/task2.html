@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ukr">
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="stylesheet" href="../css/style.css">
+   <title>Завдання 2</title>
+</head>
+
+<body>
+   <main class="page">
+      <section class="block">
+         <div class="block__container">
+            <h1 class="block__title">Додаткове завдання 2</h1>
+            <div class="block__body">
+               <a href="../index.html" class="block__link">Повернутися до index.html</a>
+            </div>
+         </div>
+      </section>
+   </main>
+   <script>
+      // Створити службове авто (водій, марка, номер). 
+      // Створити клас таким чином, щоб можна було створити тільки один екземпляр цього класу.
+
+      class Car {
+         static carRef
+         #driver
+         #brand
+         #num
+
+         constructor(driver, brand, num) {
+            if (Car.carRef)
+               return Car.carRef
+
+            this.Driver = driver
+            this.Brand = brand
+            this.Num = num
+
+            Car.carRef = this
+         }
+
+         get Driver() {
+            return this.#driver
+         }
+
+         get Brand() {
+            return this.#brand
+         }
+
+         get Num() {
+            return this.#num
+         }
+
+         set Driver(newDriver) {
+            if (newDriver.length === 0)
+               throw new Error('Некоректне ім\'я')
+            this.#driver = newDriver
+         }
+
+         set Brand(newBrand) {
+            if (newBrand.length === 0)
+               throw new Error('Некоректна назва')
+            this.#brand = newBrand
+         }
+
+         set Num(newNum) {
+            if (newNum.length === 0)
+               throw new Error('Некоректний номер')
+            this.#num = newNum
+         }
+
+         toString() {
+            return `Driver: ${this.Driver} Brand: ${this.Brand} Car Number: ${this.Num}`
+         }
+      }
+
+      const firstCar = new Car('Ivan', 'BMW', 'BE0852HE')
+      const secondCar = new Car('Petro', 'Audi', 'AA1111AA')
+
+      document.write(`
+         <div class="text">Car 1: ${firstCar}</div>
+         <div class="text">Car 2: ${secondCar}</div>
+      `)
+   </script>
+</body>
+
+</html>

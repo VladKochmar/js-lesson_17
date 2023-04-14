@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ukr">
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="stylesheet" href="../css/style.css">
+   <title>Завдання 4</title>
+</head>
+
+<body>
+   <main class="page">
+      <section class="block">
+         <div class="block__container">
+            <h1 class="block__title">Додаткове завдання 4</h1>
+            <div class="block__body">
+               <a href="../index.html" class="block__link">Повернутися до index.html</a>
+            </div>
+         </div>
+      </section>
+   </main>
+   <script>
+      // Склад. База товарів, які зберігаються на складі: назва товару, одиниця виміру, кількість, 
+      // фірма виробник (назва, реєстраційний номер). Організувати реєстрацію/відвантаження товарів,
+      // фільтрація за назвою товару, фільтрація за назвою фірми
+
+      class Storage {
+         #productsList
+
+         constructor() {
+            this.productList = []
+         }
+
+         get productList() {
+            return this.#productsList
+         }
+
+         set productList(newList) {
+            if (!Array.isArray(newList))
+               throw new Error('Некоректне значення')
+            this.#productsList = newList
+         }
+
+         addProduct(initData) {
+            this.productList.push(new Product(initData))
+         }
+
+         removeProductByNameAndFirm(productName, firmName) {
+            this.productList = this.productList.filter(product => product.name !== productName || product.manufacturer.name !== firmName)
+         }
+
+         filterByName(productName) {
+            return this.productList.filter(product => product.name === productName)
+         }
+
+         filterByFirmName(firmName) {
+            return this.productList.filter(product => product.manufacturer.name === firmName)
+         }
+
+         toString() {
+            return `${this.productList} <br>`
+         }
+      }
+
+      class Manufacturer {
+         #name
+         #registrationNumber
+
+         constructor(initData) {
+            this.name = initData.name
+            this.registrationNumber = initData.registrationNumber
+         }
+
+         get name() {
+            return this.#name
+         }
+
+         get registrationNumber() {
+            return this.#registrationNumber
+         }
+
+         set name(newName) {
+            if (newName.length === 0)
+               throw new Error('Некоректна назва')
+            this.#name = newName
+         }
+
+         set registrationNumber(newNum) {
+            if (newNum < 0)
+               throw new Error('Некоректний номер')
+            this.#registrationNumber = newNum
+         }
+
+         toString() {
+            return `Назва: ${this.name} Реєстраційний номер: ${this.registrationNumber}`
+         }
+      }
+
+      class Product {
+         #name
+         #measurementUnit
+         #quantity
+         #manufacturer
+
+         constructor(initData) {
+            this.name = initData.name
+            this.measurementUnit = initData.measurementUnit
+            this.quantity = initData.quantity
+            this.manufacturer = initData.manufacturer
+         }
+
+         get name() {
+            return this.#name
+         }
+
+         get measurementUnit() {
+            return this.#measurementUnit
+         }
+
+         get quantity() {
+            return this.#quantity
+         }
+
+         get manufacturer() {
+            return this.#manufacturer
+         }
+
+         set name(newName) {
+            if (newName.length === 0)
+               throw new Error('Некоректна назва')
+            this.#name = newName
+         }
+
+         set measurementUnit(newValue) {
+            if (newValue.length === 0)
+               throw new Error('Некоректна одиниця виміру')
+            this.#measurementUnit = newValue
+         }
+
+         set quantity(newValue) {
+            if (newValue < 0)
+               throw new Error('Некоректне число')
+            this.#quantity = newValue
+         }
+
+         set manufacturer(newValue) {
+            if (typeof newValue !== 'object' || newValue === null)
+               throw new Error('Некоректні дані')
+            this.#manufacturer = newValue
+         }
+
+         toString() {
+            return `Назва товару: ${this.name} <br> Одиниця виміру: ${this.measurementUnit} <br> Кількість: ${this.quantity} <br> Фірма виробник: ${this.manufacturer} <br><br>`
+         }
+      }
+
+      const manufacturer1 = new Manufacturer({ name: 'Manufacturer 1', registrationNumber: 123456 })
+      const manufacturer2 = new Manufacturer({ name: 'Manufacturer 2', registrationNumber: 4567 })
+      const manufacturer3 = new Manufacturer({ name: 'Manufacturer 3', registrationNumber: 639721 })
+
+      const product1 = new Product({ name: 'Potato', measurementUnit: 'kg', quantity: 1000, manufacturer: manufacturer1 })
+      const product2 = new Product({ name: 'Oil', measurementUnit: 'l', quantity: 2500, manufacturer: manufacturer3 })
+      const product3 = new Product({ name: 'Potato', measurementUnit: 'kg', quantity: 750, manufacturer: manufacturer2 })
+      const product4 = new Product({ name: 'Juice', measurementUnit: 'l', quantity: 1000, manufacturer: manufacturer3 })
+
+      const storage = new Storage()
+
+      storage.addProduct(product1)
+      storage.addProduct(product2)
+      storage.addProduct(product3)
+      storage.addProduct(product4)
+      storage.addProduct(new Product({ name: 'Apple', measurementUnit: 'kg', quantity: 4000, manufacturer: new Manufacturer({ name: 'Manufacturer 4', registrationNumber: 789356 }) }))
+      storage.addProduct(new Product({ name: 'Orange', measurementUnit: 'kg', quantity: 3000, manufacturer: manufacturer2 }))
+      storage.addProduct(new Product({ name: 'Oil', measurementUnit: 'l', quantity: 4700, manufacturer: manufacturer1 }))
+
+      document.write(`<div class="text">${storage}</div>`)
+
+      storage.removeProductByNameAndFirm('Potato', 'Manufacturer 2')
+      document.write(`
+         <div class="text">Видалено продукт: Potato, виробник: Manufacturer 2</div>
+         <div class="text">${storage}</div>
+      `)
+
+      const filteredListByName = storage.filterByName('Oil')
+      document.write(`
+         <div class="text">Фільтрація за назвою товару:</div>
+         <div class="text">${filteredListByName}</div>
+      `)
+
+      const filteredByFrimName = storage.filterByFirmName('Manufacturer 1')
+      document.write(`
+         <div class="text">Фільтрація за назвою фірми:</div>
+         <div class="text">${filteredByFrimName}</div>
+      `)
+   </script>
+</body>
+
+</html>

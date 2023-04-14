@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ukr">
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="stylesheet" href="../css/style.css">
+   <title>Завдання 5</title>
+</head>
+
+<body>
+   <main class="page">
+      <section class="block">
+         <div class="block__container">
+            <h1 class="block__title">Додаткове завдання 5</h1>
+            <div class="block__body">
+               <a href="../index.html" class="block__link">Повернутися до index.html</a>
+            </div>
+         </div>
+      </section>
+   </main>
+   <script>
+      // Особиста бібліотека. Картотека домашньої бібліотеки: дані книги (автори (піб, рік народження, короткий опис), 
+      // назва книги, жанр, видавництво (назва, реєстраційний номер, рік засування)).
+      // Реалізувати розділи бібліотеки (спеціальна література, хобі, домашнє господарство і т.д.),
+      // походження книги і наявність на даний час.
+      // Організувати додавання/вилучення книг та вибір книг за назвою, за ПІБ автора, за видавництвом.
+
+      // Тут без приватних полів, бо хотів попрактикуватися з Object.assign
+      class Author {
+         constructor(initData) {
+            Object.assign(this, initData)
+         }
+
+         toString() {
+            return `ПІБ: ${this.name} Рік народження: ${this.birthYear} Короткий опис: ${this.description}`
+         }
+      }
+
+      class Publisher {
+         constructor(initData) {
+            Object.assign(this, initData)
+         }
+
+         toString() {
+            return `Назва: ${this.title} Реєстраційний номер: ${this.registrationNumber} Рік засування: ${this.foundationYear}`
+         }
+      }
+
+      class Book {
+         constructor(initData) {
+            Object.assign(this, initData)
+         }
+
+         toString() {
+            return `Назва: ${this.title} Автор: ${this.author} Жанр: ${this.genre} Видавництво: ${this.publisher} Наявність: ${this.availability} Походження книги: ${this.origin} <br><br>`
+         }
+      }
+
+      class Library {
+         constructor(booksList) {
+            this.booksList = booksList
+         }
+
+         addBook(newBookData) {
+            this.booksList.push(new Book(newBookData))
+         }
+
+         removeBook(removedBook) {
+            this.booksList = this.booksList.filter(book => book !== removedBook)
+         }
+
+         selectByBookTitle(bookTitle) {
+            return this.booksList.find(book => book.title === bookTitle)
+         }
+
+         selectByAuthorFullName(fullName) {
+            return this.booksList.filter(book => book.author.name === fullName)
+         }
+
+         selectByPublisher(publisherTitle) {
+            return this.booksList.filter(book => book.publisher.title === publisherTitle)
+         }
+
+         toString() {
+            return `${this.booksList} <br><br><br>`
+         }
+      }
+
+      const author1 = new Author({ name: 'Петренко Петро Петрович', birthYear: 2020, description: 'Такий молодий, а вже написав 5 книг з фізики' })
+      const author2 = new Author({ name: 'Васильков Василь Васильович', birthYear: 1990, description: 'Якби ми знали хто це, але ми не знаємо' })
+      const author3 = new Author({ name: 'Яблуко Олена Іванівна', birthYear: 1992, description: 'Пише про все' })
+      const publisher1 = new Publisher({ title: 'Друкарня', registrationNumber: '357326', foundationYear: 1991 })
+      const publisher2 = new Publisher({ title: 'Книгарня', registrationNumber: '573478', foundationYear: 2014 })
+
+      const myLibrary = new Library([
+         new Book({ title: 'Фізика для початківців', author: author1, genre: 'Наукова', publisher: publisher1, availability: 'Є в наявності', origin: 'Подарунок' }),
+         new Book({ title: 'Фізика 2', author: author1, genre: 'Наукова', publisher: publisher1, availability: 'Є в наявності', origin: 'Придбана' }),
+         new Book({ title: 'Фізика 3', author: author1, genre: 'Наукова', publisher: publisher1, availability: 'Відсутня', origin: 'Подарунок' }),
+         new Book({ title: 'Фізика 4', author: author1, genre: 'Наукова', publisher: publisher2, availability: 'Є в наявності', origin: 'Подарунок' }),
+         new Book({ title: 'Вся фізика', author: author1, genre: 'Наукова', publisher: publisher2, availability: 'Є в наявності', origin: 'Придбана' }),
+         new Book({ title: 'Найкоротша книга у світі. Або як назва книги може бути довшою за зміст', author: author2, genre: 'Спеціальна література', publisher: publisher2, availability: 'Є в наявності', origin: 'Подарунок' }),
+         new Book({ title: 'Довго', author: author2, genre: 'Спеціальна література', publisher: publisher2, availability: 'Є в наявності', origin: 'Подарунок' }),
+         new Book({ title: 'Пошук хобі', author: author3, genre: 'Хобі', publisher: publisher1, availability: 'Відсутня', origin: 'Придбана' }),
+         new Book({ title: 'Дуже страшна книга', author: author3, genre: 'Жахи', publisher: publisher2, availability: 'Є в наявності', origin: 'Придбана' }),
+         new Book({ title: 'А якщо знайду?', author: author3, genre: 'Детектив', publisher: publisher1, availability: 'Відсутня', origin: 'Придбана' }),
+      ])
+
+      document.write(`<div class="text">${myLibrary}</div>`)
+
+      myLibrary.addBook({ title: 'Книга', author: author3, genre: 'Спеціальна література', publisher: publisher1, availability: 'Відсутня', origin: 'Придбана' })
+      document.write(`<div class="text">Після додавання книги: ${myLibrary}</div>`)
+      console.log(myLibrary)
+
+      myLibrary.removeBook(myLibrary.booksList[5])
+      document.write(`<div class="text">Після видалення книги: ${myLibrary}</div>`)
+      console.log(myLibrary)
+
+      const selectedBookByTitle = myLibrary.selectByBookTitle('Фізика 2')
+      const selectedBookByAuthorFullName = myLibrary.selectByAuthorFullName('Яблуко Олена Іванівна')
+      const selectedBookByPublisher = myLibrary.selectByPublisher('Книгарня')
+
+      document.write(`
+         <div class="text">за назвою: ${selectedBookByTitle}</div>
+         <div class="text">за ПІБ автора: ${selectedBookByAuthorFullName}</div>
+         <div class="text">за видавництвом: ${selectedBookByPublisher}</div>
+      `)
+   </script>
+</body>
+
+</html>

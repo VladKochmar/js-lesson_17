@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ukr">
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="stylesheet" href="../css/style.css">
+   <title>Завдання 1</title>
+</head>
+
+<body>
+   <main class="page">
+      <section class="block">
+         <div class="block__container">
+            <h1 class="block__title">Обов'язкове завдання 1</h1>
+            <div class="block__body">
+               <a href="../index.html" class="block__link">Повернутися до index.html</a>
+            </div>
+         </div>
+      </section>
+   </main>
+   <script>
+      // Створити клас, що дозволяє виконувати такі операції над масивами: знаходження кількості додатних,
+      // кількості від’ємних, кількість входжень деякого числа (статичні методи)
+
+      class MyArray {
+         static getQuantityOfNegNums(arr) {
+            // Варіань з for of
+            let counter = 0
+
+            for (const num of arr) {
+               if (num < 0) counter++
+            }
+
+            return counter
+
+            // Варіань з reduce
+            // return arr.reduce((counter, num) => num < 0 ? counter + 1 : counter, 0)
+         }
+
+         static getQuantityOfPosNums(arr) {
+            // Варіань з for of
+            let counter = 0
+
+            for (const num of arr) {
+               if (num >= 0) counter++
+            }
+
+            return counter
+
+            // Варіань з reduce
+            // return arr.reduce((counter, num) => num >= 0 ? counter + 1 : counter, 0)
+         }
+
+         static getQuantityOfOccurrencesNum(num, arr) {
+            let counter = 0
+
+            for (const elem of arr) {
+               if (elem === num) counter++
+            }
+
+            return counter
+         }
+      }
+
+      const arr = [7, 2, -3, 4, 6, -5, 2, 3, 2]
+
+      const posElemsNum = MyArray.getQuantityOfPosNums(arr)
+      const negElemsNum = MyArray.getQuantityOfNegNums(arr)
+
+      const checkedNum = parseInt(prompt('Введіть число'))
+      const identicalElemsNum = MyArray.getQuantityOfOccurrencesNum(checkedNum, arr)
+
+      document.write(`
+         <div class="text">Масив: ${arr}</div>
+         <div class="text">Кількість додатних елементів: ${posElemsNum}</div>
+         <div class="text">Кількість від’ємних елементів: ${negElemsNum}</div>
+         <div class="text">Кількість ${checkedNum} у масиві: ${identicalElemsNum}</div>
+      `)
+   </script>
+</body>
+
+</html>
